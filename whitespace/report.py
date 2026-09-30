@@ -196,8 +196,8 @@ def build(scan: dict | None, checks: list[dict], out: str | Path) -> Path:
 not semantic — the evidence table is the real output; the verdict is a headline.
 <b>GREENFIELD</b> means nothing close surfaced in the searched sources, not that
 nothing exists. <b>OCCUPIED</b> means a direct equivalent was found — read the top
-rows before building. Sources: GitHub search API, Hacker News Algolia API,
-Product Hunt launches via the awesome-product-hunt ledger, web via DuckDuckGo.
+rows before building. Sources: GitHub search API, Hacker News Algolia API, npm registry search,
+Product Hunt launches via the awesome-product-hunt ledger.
 All keyless; any source can degrade without breaking the report.
 </footer>
 

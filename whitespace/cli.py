@@ -65,6 +65,9 @@ def cmd_scan(args: argparse.Namespace) -> int:
 
 def cmd_check(args: argparse.Namespace) -> int:
     idea = args.idea
+    if not idea.strip():
+        print('error: describe the idea, e.g. whitespace check "my tool idea"')
+        return 2
     prev = store.similar_previous_checks(idea)
     if prev and not args.json:
         print(dim("previously checked:"))

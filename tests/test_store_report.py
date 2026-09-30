@@ -65,6 +65,15 @@ class TestStore(unittest.TestCase):
         hits = store.similar_previous_checks("AI agent memory auditor for stale instructions")
         self.assertEqual(hits, [])
 
+    def test_similar_previous_checks_pairs_right_records(self):
+        # regression: rank() sorts, so records must follow their own scores
+        store.save_check(_fake_result("sourdough bread baking timer"))
+        store.save_check(_fake_result("AI agent memory auditor lints memory files"))
+        hits = store.similar_previous_checks("AI agent memory auditor for stale instructions")
+        self.assertEqual(len(hits), 1)
+        self.assertIn("memory auditor", hits[0]["idea"])
+        self.assertGreater(hits[0]["similarity"], 0.35)
+
     def test_scan_roundtrip(self):
         scan = {"generated_at": "x", "window_days": 14, "sources": {}, "themes": []}
         store.save_scan(scan)

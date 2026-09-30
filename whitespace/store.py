@@ -56,14 +56,15 @@ def similar_previous_checks(idea: str, limit: int = 3) -> list[dict]:
     checks = _read_checks()
     if not checks:
         return []
-    ranked = scoring.rank(idea, [{"text": c["idea"]} for c in checks])
-    # ranked[i] corresponds to checks[i]; order by score desc
-    order = sorted(range(len(checks)), key=lambda i: -ranked[i][1])
+    # rank() sorts by score, so carry the ledger index inside each candidate
+    # instead of assuming positional correspondence afterwards.
+    cands = [{"text": c["idea"], "idx": i} for i, c in enumerate(checks)]
+    ranked = scoring.rank(idea, cands)
     out = []
-    for i in order[:limit]:
-        if ranked[i][1] > 0.35:
-            rec = dict(checks[i])
-            rec["similarity"] = round(ranked[i][1], 3)
+    for cand, score in ranked[:limit]:
+        if score > 0.35:
+            rec = dict(checks[cand["idx"]])
+            rec["similarity"] = round(score, 3)
             out.append(rec)
     return out
 
